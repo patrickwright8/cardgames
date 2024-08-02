@@ -1,10 +1,11 @@
 from setuptools import setup, find_packages
+from pokerbot.__init__ import __version__
 
 setup(
-    name='pokerbot',
-    version='0.1.0',
+    name='cardgames',
+    version=__version__,
     author='patrickwright8',
-    description='A Python package to explore ML and game theory in Poker.',
+    description='A Python package to explore ML and game theory in card games.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/patrickwright8/pokerbot',
