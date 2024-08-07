@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from pokerbot.__init__ import __version__
+from cardgames.__init__ import __version__
 
 setup(
     name='cardgames',
