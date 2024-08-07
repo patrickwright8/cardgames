@@ -2,10 +2,10 @@
 Utilities for card games, such as Cards, Hands, and Decks. 
 """
 
-# Imports
+### Imports ###
 import numpy as np
 
-# Constants
+### Constants ###
 suits = {
     "C" : "Clubs",
     "D" : "Diamonds",
@@ -29,7 +29,7 @@ ranks = {
     "A" : "Ace",
 }
 
-# Low-Level Classes
+### Low-Level Classes ###
 class Card:
     """
     Class attributes:
@@ -84,7 +84,7 @@ class Card:
         self.id = self.rank + self.suit
 
         
-# High-Level Classes
+### High-Level Classes ###
 class Hand:
     def __init__(self,
                  *args : Card
