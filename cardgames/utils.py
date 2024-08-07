@@ -68,14 +68,16 @@ class Card:
         """
         input_as_list = list(card)
 
-        # Capture 0th element of list, obtain rank
-        self.rank = input_as_list[0]
-        # Capture 1st element of list, obtain suit
-        self.suit = input_as_list[1]
+        # Capture 0th up to 2nd-to-last element as str
+        # Store as rank
+        # Rank is captured this way to support 2-digit '10' rank
+        self.rank = "".join(input_as_list[0:-1])
+        # Capture last element of list for suit
+        self.suit = "".join(input_as_list[-1])
         
         # Generate rank name and suit name
-        self.rank_name = ranks[input_as_list[0]]
-        self.suit_name = suits[input_as_list[1]]
+        self.rank_name = ranks[self.rank]
+        self.suit_name = suits[self.suit]
 
         # Generate card name and ID
         self.card_name = f"{self.rank_name} of {self.suit_name}"
