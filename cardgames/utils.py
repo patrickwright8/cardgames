@@ -206,4 +206,4 @@ class Deck(Hand):
             raise ValueError("Cannot cut more cards than Deck contains.")
 
         self.cut_cards = Hand(*self.cards[-n:])
-        self.remove_cards(*self.cut_cards.cards)
+        self.cards = self.cards[:-n]
