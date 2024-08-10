@@ -29,6 +29,12 @@ ranks = {
     "A" : "Ace",
 }
 
+all_ids = [
+    rank + suit
+    for rank in ranks.keys()
+    for suit in suits.keys()
+]
+
 ### Low-Level Classes ###
 class Card:
     """

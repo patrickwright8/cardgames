@@ -4,11 +4,10 @@ Functions to test utils module.
 
 ### Imports ###
 import pytest
-from cardgames.utils import Card, Hand, ranks, suits
+from cardgames.utils import Card, Hand, ranks, suits, all_ids
 
 ### Constants ###
-# Generate list of all possible IDs, with corresponding ranks and suits
-all_ids = []
+# Generate list of ranks and suits corresopnding to all_ids list
 matching_ranks = []
 matching_suits = []
 for rank in ranks.keys():
