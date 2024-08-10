@@ -4,7 +4,7 @@ Functions to test utils module.
 
 ### Imports ###
 import pytest
-from cardgames.utils import Card, Hand, ranks, suits, all_ids
+from cardgames.utils import Card, Hand, Deck, ranks, suits, all_ids
 
 ### Constants ###
 # Generate list of ranks and suits corresopnding to all_ids list
@@ -115,6 +115,35 @@ class TestHand:
             prev_ids = all_ids[:count]
             for prev_id in prev_ids:
                 assert (prev_id not in hand.ids)
+
+class TestDeck:
+    def test_shuffle(self):
+        """
+        Initialize Deck containing `n_decks * 52` Cards, then shuffle. 
+        Assert that each id occurs in Deck exactly `n_decks` times. 
+        """
+        n_decks = 10
+        deck = Deck(n_decks=n_decks)
+        deck.shuffle()
+        deck_ids = [card.id for card in deck.cards]
+
+        for id in all_ids:
+            assert (deck_ids.count(id) == n_decks)
+
+    def test_deal(self):
+        """
+        Initialize Deck, then deal Cards one-by-one.
+
+        Assert that each dealt Card matches the id from all_ids, and the Card 
+        is not in the Deck after being dealt. 
+        """
+        deck = Deck()
+
+        for id in all_ids:
+            card = deck.deal(1)[0]  # Select 0th dealt Card
+
+            assert (card.id == id)
+            assert (card.id not in deck.ids)
 
 if __name__ == "__main__":
     pytest.main()
