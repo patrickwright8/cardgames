@@ -174,7 +174,7 @@ class Deck(Hand):
         Params
         ------
         n : int (default = 1)
-            Number of cards to be dealt        
+            Number of Cards to be dealt        
 
         Returns
         -------
