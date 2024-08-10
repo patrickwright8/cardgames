@@ -100,6 +100,13 @@ class Hand:
         Alphanumeric IDs associated with each Card.
         """
         return [card.id for card in self.cards]
+
+    @property
+    def n_cards(self) -> int:
+        """
+        Number of Cards currently in hand. 
+        """
+        return len(self.cards)
      
     # Public methods
     def add_cards(self,

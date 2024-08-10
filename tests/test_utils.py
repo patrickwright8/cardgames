@@ -65,6 +65,18 @@ class TestHand:
         for count, id in enumerate(hand.ids):
             assert (ids[count] == id)
 
+    def test_n_cards(self):
+        """
+        Initialize Hand with `n_decks` (default = 10) decks' worth of Cards, 
+        then assert that `Hand.n_cards == N_CARDS_PER_DECK * n_decks`.
+        """
+        n_decks = 10
+        ids = all_ids * n_decks
+        cards = [Card(id) for id in ids]
+        hand = Hand(*cards)
+
+        assert (hand.n_cards == N_CARDS_PER_DECK * n_decks)
+
     def test_add_cards(self):
         """
         Add Cards one-by-one to Hand, and assert that both:
