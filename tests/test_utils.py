@@ -158,5 +158,30 @@ class TestDeck:
             assert (card.id == id)
             assert (card.id not in deck.ids)
 
+    def test_cut(self):
+        """
+        Initialize Deck, then cut 10 Cards. 
+
+        Assert that each cut Card is in Deck.cut_cards exactly once, and
+        assert that each cut Card is in Deck.cards exactly ZERO times.
+
+        Assert that each remaining id is in Deck.cards exactly once, and
+        assert that each remaining id is in Deck.cut_cards exactly ZERO times.
+        """
+        cut_size = 10
+        cut_ids = all_ids[-cut_size:]
+        remaining_ids = all_ids[:-cut_size]
+        
+        deck = Deck()
+        deck.cut(cut_size)
+
+        for id in cut_ids:
+            assert (deck.cut_cards.ids.count(id) == 1)
+            assert (deck.ids.count(id) == 0)
+
+        for id in remaining_ids:
+            assert (deck.cut_cards.ids.count(id) == 0)
+            assert (deck.ids.count(id) == 1)
+
 if __name__ == "__main__":
     pytest.main()
