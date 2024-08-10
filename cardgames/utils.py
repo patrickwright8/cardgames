@@ -129,3 +129,55 @@ class Hand:
         ids = self.ids
         string = ", ".join(ids)
         print(string)
+
+class Deck(Hand):
+    def __init__(self,
+                 n_decks=1,
+                 ) -> None:
+        """
+        Initialize a Deck containing `n_decks * 52` Cards. 
+
+        Params
+        ------
+        n_decks : int (default = 1)
+            Number of decks to initialize with. Each of the 52 Cards will have
+            `n_decks` occurrences in the Deck. 
+        """
+        all_cards = [Card(id) for id in all_ids] * n_decks
+
+        super().__init__(*all_cards)
+
+        self._rng = np.random.default_rng()
+
+    def shuffle(self) -> None:
+        """
+        Shuffles card deck.
+        """
+        self._rng.shuffle(self.cards)
+
+    def deal(self,
+             n : int,
+             ) -> list[Card]:
+        """
+        Deals `n` Cards from top of the deck (starting at 0th index). 
+        Removes the cards from the Deck. 
+
+        Params
+        ------
+        n : int
+            Number of cards to be dealt        
+
+        Returns
+        -------
+        cards : list[Card]
+            Cards that were dealt
+        """
+        if n > len(self.cards):
+            raise ValueError("Cannot deal more cards than Deck contains.")
+
+        cards = self.cards[:n]
+        self.remove_cards(*cards)
+
+        return cards
+
+
