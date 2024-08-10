@@ -91,11 +91,11 @@ class Hand:
         self.cards = [arg for arg in args]
         ids = self.ids  # Generate ids to make sure args are Cards
     
-    # Getter properties
+    # Class Properties
     @property
     def ids(self) -> list[str]:
         """
-        Alphanumeric IDs associated with each card.
+        Alphanumeric IDs associated with each Card.
         """
         return [card.id for card in self.cards]
      
