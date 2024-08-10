@@ -35,6 +35,8 @@ all_ids = [
     for suit in suits.keys()
 ]
 
+N_CARDS_PER_DECK = len(all_ids)
+
 ### Low-Level Classes ###
 class Card:
     def __init__(self,
@@ -135,12 +137,12 @@ class Deck(Hand):
                  n_decks=1,
                  ) -> None:
         """
-        Initialize a Deck containing `n_decks * 52` Cards. 
+        Initialize a Deck containing `n_decks * N_CARDS_PER_DECK` Cards. 
 
         Params
         ------
         n_decks : int (default = 1)
-            Number of decks to initialize with. Each of the 52 Cards will have
+            Number of decks to initialize with. Each of the Cards will have
             `n_decks` occurrences in the Deck. 
         """
         all_cards = [Card(id) for id in all_ids] * n_decks

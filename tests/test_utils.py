@@ -4,7 +4,8 @@ Functions to test utils module.
 
 ### Imports ###
 import pytest
-from cardgames.utils import Card, Hand, Deck, ranks, suits, all_ids
+from cardgames.utils import Card, Hand, Deck, ranks, suits, all_ids, \
+    N_CARDS_PER_DECK
 
 ### Constants ###
 # Generate list of ranks and suits corresopnding to all_ids list
@@ -119,8 +120,8 @@ class TestHand:
 class TestDeck:
     def test_shuffle(self):
         """
-        Initialize Deck containing `n_decks * 52` Cards, then shuffle. 
-        Assert that each id occurs in Deck exactly `n_decks` times. 
+        Initialize Deck containing `n_decks * N_CARDS_PER_DECK` Cards, then
+        shuffle. Assert that each id occurs in Deck exactly `n_decks` times. 
         """
         n_decks = 10
         deck = Deck(n_decks=n_decks)
