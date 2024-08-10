@@ -160,28 +160,28 @@ class TestDeck:
 
     def test_cut(self):
         """
-        Initialize Deck, then cut 10 Cards. 
+        Initialize Deck with `n_decks` worth of Cards, then cut `10 * n_decks` 
+        Cards. 
 
-        Assert that each cut Card is in Deck.cut_cards exactly once, and
-        assert that each cut Card is in Deck.cards exactly ZERO times.
+        Manually generate test list of Deck ids (named `deck_ids`). 
+        Cut `10 * n_decks` Cards from `deck_ids`. 
 
-        Assert that each remaining id is in Deck.cards exactly once, and
-        assert that each remaining id is in Deck.cut_cards exactly ZERO times.
+        Assert that cut ids from test list exactly match cut ids from Deck, and
+        assert that remaining ids from test list exactly match remaining ids 
+        from Deck.
         """
-        cut_size = 10
-        cut_ids = all_ids[-cut_size:]
-        remaining_ids = all_ids[:-cut_size]
+        n_decks = 6
+        cut_size = 10 * n_decks
+        deck_ids = all_ids * n_decks    # Generate deck ids for testing
+
+        cut_ids = deck_ids[-cut_size:]
+        remaining_ids = deck_ids[:-cut_size]
         
-        deck = Deck()
+        deck = Deck(n_decks)
         deck.cut(cut_size)
 
-        for id in cut_ids:
-            assert (deck.cut_cards.ids.count(id) == 1)
-            assert (deck.ids.count(id) == 0)
-
-        for id in remaining_ids:
-            assert (deck.cut_cards.ids.count(id) == 0)
-            assert (deck.ids.count(id) == 1)
+        assert (remaining_ids == deck.ids)
+        assert (cut_ids == deck.cut_cards.ids)
 
 if __name__ == "__main__":
     pytest.main()
