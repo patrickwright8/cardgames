@@ -50,4 +50,4 @@ class TestCard:
             suit = suits[matching_suits[i]]
             card_name = f"{rank} of {suit}"
 
-            assert (card.card_name == card_name)
+            assert (card.name == card_name)

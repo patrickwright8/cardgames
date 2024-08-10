@@ -42,13 +42,13 @@ class Card:
         - Card("JC").id == "JC"
         - Card("AS").id == "AS"
 
-    Card.card_name : str
+    Card.name : str
         Common name for card
 
         Examples:
-        - Card("4H").card_name == "Four of Hearts"
-        - Card("JC").card_name == "Jack of Clubs"
-        - Card("AS").card_name == "Ace of Spades"
+        - Card("4H").name == "Four of Hearts"
+        - Card("JC").name == "Jack of Clubs"
+        - Card("AS").name == "Ace of Spades"
     """
     def __init__(self,
                  card : str
@@ -80,7 +80,7 @@ class Card:
         self.suit_name = suits[self.suit]
 
         # Generate card name and ID
-        self.card_name = f"{self.rank_name} of {self.suit_name}"
+        self.name = f"{self.rank_name} of {self.suit_name}"
         self.id = self.rank + self.suit
 
         
@@ -122,11 +122,7 @@ class Hand:
             self.cards.pop(id)
 
     def print_cardnames(self) -> None:
-        cards = self.get_cards()
-        names = []
-        for card in cards:
-            names.append(card.card_name)
-
+        names = [ card.name for card in self.cards ]
         string = ", ".join(names)
         print(string)
 
