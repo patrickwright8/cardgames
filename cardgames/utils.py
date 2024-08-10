@@ -37,30 +37,11 @@ all_ids = [
 
 ### Low-Level Classes ###
 class Card:
-    """
-    Class attributes:
-    -----------------
-    Card.id : str
-        Alphanumeric identifier for card
-
-        Examples:
-        - Card("4H").id == "4H"
-        - Card("JC").id == "JC"
-        - Card("AS").id == "AS"
-
-    Card.name : str
-        Common name for card
-
-        Examples:
-        - Card("4H").name == "Four of Hearts"
-        - Card("JC").name == "Jack of Clubs"
-        - Card("AS").name == "Ace of Spades"
-    """
     def __init__(self,
                  card : str
                  ) -> None:
         """
-        Initialize a poker card. Input string should be of the format RankSuit.
+        Initialize a Card. Input string should be of the format RankSuit.
 
         Examples:
             - Card("4H") == Four of Hearts
@@ -89,12 +70,24 @@ class Card:
         self.name = f"{self.rank_name} of {self.suit_name}"
         self.id = self.rank + self.suit
 
-        
 ### High-Level Classes ###
 class Hand:
     def __init__(self,
                  *args : Card
                  ) -> None:
+        """
+        Initialize a Hand. Input args must be Cards.
+
+        Examples:
+            - `Hand(Card("4H"), Card("8C"), Card("AS"))` initializes a Hand 
+              containing Four of Hearts, Eight of Clubs, and Ace of Spades.
+
+        Params
+        ------
+        *args : Card
+            Variable number of Cards, where each Card is input in the format
+            `Card("RankSuit")`
+        """
         self.cards = [arg for arg in args]
         ids = self.ids  # Generate ids to make sure args are Cards
     
