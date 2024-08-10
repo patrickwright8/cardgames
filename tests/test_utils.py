@@ -153,7 +153,7 @@ class TestDeck:
         deck = Deck()
 
         for id in all_ids:
-            card = deck.deal(1)[0]  # Select 0th dealt Card
+            card = deck.deal()[0]  # Select 0th dealt Card
 
             assert (card.id == id)
             assert (card.id not in deck.ids)

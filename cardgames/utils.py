@@ -165,7 +165,7 @@ class Deck(Hand):
         self._rng.shuffle(self.cards)
 
     def deal(self,
-             n : int,
+             n=1,
              ) -> list[Card]:
         """
         Deals `n` Cards from top of the deck (starting at 0th index). 
@@ -173,7 +173,7 @@ class Deck(Hand):
 
         Params
         ------
-        n : int
+        n : int (default = 1)
             Number of cards to be dealt        
 
         Returns
