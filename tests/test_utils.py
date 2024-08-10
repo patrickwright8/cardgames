@@ -12,7 +12,6 @@ matching_ranks = []
 matching_suits = []
 for rank in ranks.keys():
     for suit in suits.keys():
-        all_ids.append(rank + suit) # Add current card ID to all_ids
         matching_ranks.append(rank) # Add corresponding rank to list
         matching_suits.append(suit) # Add corresponding suit to list
 
