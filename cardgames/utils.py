@@ -89,37 +89,37 @@ class Hand:
     def __init__(self,
                  *args : Card
                  ) -> None:
-        self.cards = {}
-        for arg in args:
-            self.cards[arg.id] = arg
+        self.cards = [arg for arg in args]
+        ids = self.ids  # Generate ids to make sure args are Cards
     
-    # Define getter/setters for ids/cards because these are dynamic
-    def get_ids(self) -> list[str]:
-        ids = self.cards.keys()
-        return list(ids)
-    
-    def get_cards(self) -> list[Card]:
-        cards = self.cards.values()
-        return list(cards)
+    # Getter properties
+    @property
+    def ids(self) -> list[str]:
+        """
+        Alphanumeric IDs associated with each card.
+        """
+        return [card.id for card in self.cards]
      
     # Public methods
     def add_cards(self,
                   *args : Card
                   ) -> None:
         for arg in args:
-            self.cards[arg.id] = arg
+            self.cards.append(arg)
 
     def remove_cards(self,
                      *args : Card
                      ) -> None:
         for arg in args:
-            self.cards.pop(arg.id)
+            ix = self.ids.index(arg.id)
+            self.cards.pop(ix)
 
     def remove_by_id(self,
                      *args : str
                      ) -> None:
-        for id in args:
-            self.cards.pop(id)
+        for arg in args:
+            ix = self.ids.index(arg)
+            self.cards.pop(ix)
 
     def print_cardnames(self) -> None:
         names = [ card.name for card in self.cards ]
@@ -127,6 +127,6 @@ class Hand:
         print(string)
 
     def print_ids(self) -> None:
-        ids = self.get_ids()
+        ids = self.ids
         string = ", ".join(ids)
         print(string)
