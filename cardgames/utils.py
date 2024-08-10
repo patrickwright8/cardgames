@@ -207,3 +207,8 @@ class Deck(Hand):
 
         self.cut_cards = Hand(*self.cards[-n:])
         self.cards = self.cards[:-n]
+
+"""
+To-Do:
+- Consider implementing infinite deck (and how to do it)
+"""
