@@ -189,4 +189,21 @@ class Deck(Hand):
 
         return cards
 
+    def cut(self,
+            n : int,
+            ) -> None:
+        """
+        Cuts the last n Cards out of the Deck. 
 
+        Cut Cards are stored as a Hand in the Deck.cut_cards attribute. 
+
+        Params
+        ------
+        n : int
+            Number of Cards to cut
+        """
+        if n > self.n_cards:
+            raise ValueError("Cannot cut more cards than Deck contains.")
+
+        self.cut_cards = Hand(*self.cards[-n:])
+        self.remove_cards(*self.cut_cards.cards)
