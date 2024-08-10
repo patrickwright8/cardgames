@@ -51,3 +51,72 @@ class TestCard:
             card_name = f"{rank} of {suit}"
 
             assert (card.name == card_name)
+
+class TestHand:
+    def test_ids(self):
+        """
+        Initialize Hand with n (default = 10) decks' worth of cards, then 
+        assert that Hand ids match deck ids. 
+        """
+        n_decks = 10
+        ids = all_ids * n_decks
+        cards = [Card(id) for id in ids]
+        hand = Hand(*cards)
+
+        for count, id in enumerate(hand.ids):
+            assert (ids[count] == id)
+
+    def test_add_cards(self):
+        """
+        Add Cards one-by-one to Hand, and assert that both:
+            - The new Card is in the Hand (by id)
+            - All previously-added cards are in the Hand (by id)
+        """
+        hand = Hand()
+        for count, id in enumerate(all_ids):
+            hand.add_cards(Card(id))
+
+            assert (id in hand.ids)
+
+            prev_ids = all_ids[:count]
+            for prev_id in prev_ids:
+                assert (prev_id in hand.ids)
+
+    def test_remove_cards(self):
+        """
+        Fill Hand with one deck's worth of Cards, then remove Cards one-by-one 
+        and assert that both:
+            - The new Card is not in the Hand (by id)
+            - All previously-removed Cards are not in the Hand (by id)
+        """
+        all_cards = [Card(id) for id in all_ids]
+        hand = Hand(*all_cards)
+
+        for count, id in enumerate(all_ids):
+            hand.remove_cards(Card(id))
+            assert (id not in hand.ids)
+
+            prev_ids = all_ids[:count]
+            for prev_id in prev_ids:
+                assert (prev_id not in hand.ids)
+
+    def test_remove_by_id(self):
+        """
+        Fill Hand with one deck's worth of Cards, then remove Cards one-by-one
+        by id and assert that both:
+            - The new id is not in the Hand
+            - All previously-removed ids are not in the Hand
+        """
+        all_cards = [Card(id) for id in all_ids]
+        hand = Hand(*all_cards)
+
+        for count, id in enumerate(all_ids):
+            hand.remove_by_id(id)
+            assert (id not in hand.ids)
+
+            prev_ids = all_ids[:count]
+            for prev_id in prev_ids:
+                assert (prev_id not in hand.ids)
+
+if __name__ == "__main__":
+    pytest.main()
