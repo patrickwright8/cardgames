@@ -130,6 +130,25 @@ class TestHand:
                 assert (prev_id not in hand.ids)
 
 class TestDeck:
+    def test_seed(self):
+        """
+        Initialize two Decks with the same seed. Shuffle and assert that 
+        the shuffled ids are exactly equal to each other. 
+
+        Initialize a third Deck with a different seed. Shuffle and assert that
+        the shuffled ids are not equal to that of the first two decks.
+        """
+        seed1 = 0
+        seed2 = 1
+        deck1 = Deck(seed=seed1)
+        deck2 = Deck(seed=seed1)
+        deck3 = Deck(seed=seed2)
+        deck1.shuffle()
+        deck2.shuffle()
+
+        assert (deck1.ids == deck2.ids)
+        assert (deck1.ids != deck3.ids)
+    
     def test_shuffle(self):
         """
         Initialize Deck containing `n_decks * N_CARDS_PER_DECK` Cards, then
