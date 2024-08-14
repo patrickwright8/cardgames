@@ -16,10 +16,7 @@ simple_rank_scores = {
 
 ### Game Classes ###
 class GameBase(gym.Env):
-    """Custom Environment that follows gym interface."""
-
-    metadata = {"render_modes": ["human"], "render_fps": 30}
-
+    """Base Game Environment that follows gym interface."""
     def __init__(self, 
                  n_decks : int, 
                  rank_scores : dict,
