@@ -142,6 +142,7 @@ class Hand:
 class Deck(Hand):
     def __init__(self,
                  n_decks=1,
+                 seed=int,
                  ) -> None:
         """
         Initialize a Deck containing `n_decks * N_CARDS_PER_DECK` Cards. 
@@ -151,12 +152,14 @@ class Deck(Hand):
         n_decks : int (default = 1)
             Number of decks to initialize with. Each of the Cards will have
             `n_decks` occurrences in the Deck. 
+        seed : Any (default = None)
+            Seed for shuffling deck
         """
         all_cards = [Card(id) for id in all_ids] * n_decks
 
         super().__init__(*all_cards)
 
-        self._rng = np.random.default_rng()
+        self._rng = np.random.default_rng(seed=seed)
 
     def shuffle(self) -> None:
         """
