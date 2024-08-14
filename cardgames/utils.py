@@ -142,7 +142,7 @@ class Hand:
 class Deck(Hand):
     def __init__(self,
                  n_decks=1,
-                 seed=int,
+                 seed=None,
                  ) -> None:
         """
         Initialize a Deck containing `n_decks * N_CARDS_PER_DECK` Cards. 
