@@ -1,5 +1,5 @@
 # cardgames
-A Python package to explore ML and game theory in card games.
+A Python package to explore reinforcement learning and statistics in card games.
 
 ## Installation
 ```
