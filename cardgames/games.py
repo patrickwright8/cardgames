@@ -4,33 +4,79 @@ Module containing various card games.
 
 ### Imports ###
 import numpy as np
-from cardgames.utils import Card, Hand, Deck, ranks, suits, all_ids, \
-N_CARDS_PER_DECK
+import gymnasium as gym
+from gymnasium import spaces
+
+from cardgames.utils import Card, Hand, Deck, ranks
 
 ### Constants ###
-
+simple_rank_scores = {
+    k : v for k, v in zip(ranks.keys(), range(len(ranks)))
+}
 
 ### Game Classes ###
-class GameBase:
-    def __init__(self,
-                 n_decks : int,
+class GameBase(gym.Env):
+    """Custom Environment that follows gym interface."""
+
+    metadata = {"render_modes": ["human"], "render_fps": 30}
+
+    def __init__(self, 
+                 n_decks : int, 
+                 rank_scores : dict,
+                 n_actions=None,
                  ) -> None:
-        # Need to think how to best design this for reusability
-        self._n_decks = n_decks
-        self.deck = Deck(n_decks=n_decks)
+        # Constants
+        self.low = -1
+        self.high = 1
+
+        self.n_decks = n_decks
+        self.rank_scores = rank_scores
         
+        super().__init__()
 
-### Simple Card Game Idea ###
-"""
-Deck: single deck, shuffled
-Rank Valuation: 2 = 2, ..., A = 14
-Suit Valuation: Parity
-Scoring: points += 10 - |guess - value(card)|
-Goal: Obtain the highest score by the time the deck is ran through. 
+        if n_actions is None:
+            n_actions = len(rank_scores)
 
-Each turn is as follows:
-    1. Agent makes a guess for the value of the next dealt card.
-    2. Card is dealt. 
-    3. Score is incremented. 
+        self.action_space = spaces.Discrete(n_actions)
+        self.observation_space = spaces.Discrete(len(rank_scores))
 
-"""
+    def normalize(self, val : int) -> float:
+        mean = (len(self.rank_scores) - 1) / 2
+        return (val - mean) / mean
+    
+    def reward(self, observation : int, action : int) -> float:
+        obs_norm = self.normalize(observation)
+        action_norm = self.normalize(action)
+
+        return abs( 1 - (obs_norm - action_norm) )
+
+    def step(self, action):
+        self.card = self.deck.deal()[0]  # Deal a single card and store it
+        observation = self.rank_scores[self.card.rank]
+        
+        terminated = bool(self.deck.n_cards == 0)
+        truncated = False  # we do not limit the number of steps here
+        reward = self.reward(observation, action)
+        info = {}
+
+        return (
+            observation,
+            reward,
+            terminated,
+            truncated,
+            info,
+        )
+
+    def reset(self, seed=None, options=None):
+        self.deck = Deck(self.n_decks, seed)
+        self.deck.shuffle()
+        self.card = self.deck.deal()[0]  # Deal a single card and store it
+
+        observation = self.rank_scores[self.card.rank]
+        return observation, {}  # Empty info dict
+
+    def render(self):
+        print(f"Dealt {self.card.name}\n")
+
+    def close(self):
+        pass
