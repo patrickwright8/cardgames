@@ -45,7 +45,7 @@ class GameBase(gym.Env):
         obs_norm = self.normalize(observation)
         action_norm = self.normalize(action)
 
-        return abs( 1 - (obs_norm - action_norm) )
+        return 1 - abs(obs_norm - action_norm)
 
     def step(self, action):
         self.card = self.deck.deal()[0]  # Deal a single card and store it
