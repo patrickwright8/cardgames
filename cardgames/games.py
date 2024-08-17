@@ -11,7 +11,7 @@ from cardgames.utils import Card, Hand, Deck, ranks
 
 ### Constants ###
 simple_rank_scores = {
-    k : v for k, v in zip(ranks.keys(), range(len(ranks)))
+    rank : score for rank, score in zip( ranks.keys(), range(len(ranks)) )
 }
 
 ### Game Classes ###
@@ -22,10 +22,6 @@ class GameBase(gym.Env):
                  rank_scores : dict,
                  n_actions=None,
                  ) -> None:
-        # Constants
-        self.low = -1
-        self.high = 1
-
         self.n_decks = n_decks
         self.rank_scores = rank_scores
         
@@ -37,22 +33,26 @@ class GameBase(gym.Env):
         self.action_space = spaces.Discrete(self.n_actions)
         self.observation_space = spaces.Discrete(len(rank_scores))
 
-    def normalize(self, val : int) -> float:
-        mean = (len(self.rank_scores) - 1) / 2
+    def normalize_action(self, val : int) -> float:
+        mean = (self.action_space.n - 1) / 2
         return (val - mean) / mean
     
-    def reward(self, observation : int, action : int) -> float:
-        obs_norm = self.normalize(observation)
-        action_norm = self.normalize(action)
+    def normalize_observation(self, val : int) -> float:
+        mean = (self.observation_space.n - 1) / 2
+        return (val - mean) / mean
 
-        return 1 - abs(obs_norm - action_norm)
+    def reward(self, observation : int, action : int) -> float:
+        obs_norm = self.normalize_observation(observation)
+        action_norm = self.normalize_action(action)
+
+        return 1 - abs(obs_norm - action_norm)/2
 
     def step(self, action):
         self.card = self.deck.deal()[0]  # Deal a single card and store it
         observation = self.rank_scores[self.card.rank]
         
         terminated = bool(self.deck.n_cards == 0)
-        truncated = False  # we do not limit the number of steps here
+        truncated = False
         reward = self.reward(observation, action)
         info = {}
 
@@ -67,9 +67,8 @@ class GameBase(gym.Env):
     def reset(self, seed=None, options=None):
         self.deck = Deck(self.n_decks, seed)
         self.deck.shuffle()
-        self.card = self.deck.deal()[0]  # Deal a single card and store it
 
-        observation = self.rank_scores[self.card.rank]
+        observation = 0         # 0 as first dummy observation
         return observation, {}  # Empty info dict
 
     def render(self):
