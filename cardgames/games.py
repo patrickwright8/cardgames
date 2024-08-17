@@ -77,3 +77,44 @@ class GameBase(gym.Env):
 
     def close(self):
         pass
+
+class GameSimulator(GameBase):
+    def __init__(self,
+                 n_decks : int,
+                 rank_scores : dict,
+                 n_actions=None,
+                 ):
+        super().__init__(n_decks, rank_scores, n_actions)
+
+    def score_distribution(self):
+        ranks = [card.rank for card in self.deck.cards]
+        scores = [self.rank_scores[rank] for rank in ranks]
+
+        return np.array(scores)
+    
+    def random(self):
+        return self.deck._rng.integers(0, self.n_actions)
+
+    def expected_score(self):
+        return np.mean(self.score_distribution())
+    
+    def mean_score(self):
+        return np.mean( list(self.rank_scores.values()) )
+
+    def simulate_run(self, action_func, seed=0, verbose=False):
+        self.reset(seed=seed)
+        n_cards = self.deck.n_cards
+        score_rank = {v : k for k, v in self.rank_scores.items()}
+
+        rewards = []
+        while n_cards > 0:
+            action = action_func()
+            tup = self.step(action)
+            rewards.append(tup[1])  # Add current reward to rewards
+            n_cards = self.deck.n_cards
+            
+            if verbose == True:
+                self.render()
+                print(f"Player guessed {score_rank[action]}\n")
+
+        return np.array(rewards, dtype=np.float64)
