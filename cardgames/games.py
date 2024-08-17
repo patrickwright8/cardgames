@@ -32,9 +32,9 @@ class GameBase(gym.Env):
         super().__init__()
 
         if n_actions is None:
-            n_actions = len(rank_scores)
+            self.n_actions = len(rank_scores)
 
-        self.action_space = spaces.Discrete(n_actions)
+        self.action_space = spaces.Discrete(self.n_actions)
         self.observation_space = spaces.Discrete(len(rank_scores))
 
     def normalize(self, val : int) -> float:
@@ -73,7 +73,7 @@ class GameBase(gym.Env):
         return observation, {}  # Empty info dict
 
     def render(self):
-        print(f"Dealt {self.card.name}\n")
+        print(f"Player sees {self.card.id}\n")
 
     def close(self):
         pass
