@@ -101,7 +101,7 @@ class GameSimulator(GameBase):
     def mean_score(self):
         return np.mean( list(self.rank_scores.values()) )
 
-    def simulate_run(self, action_func, seed=0, verbose=False):
+    def simulate_run(self, action_func, seed=None, verbose=False):
         self.reset(seed=seed)
         n_cards = self.deck.n_cards
         score_rank = {v : k for k, v in self.rank_scores.items()}
