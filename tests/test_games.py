@@ -7,8 +7,8 @@ import numpy as np
 import pytest
 from stable_baselines3.common.env_checker import check_env
 
-from cardgames.games import GameBase, simple_rank_scores
-from cardgames.utils import N_CARDS_PER_DECK
+from cardgames.games import GameBase, GameSimulator, simple_rank_scores
+from cardgames.utils import Card, Hand, N_CARDS_PER_DECK
 
 
 ### Test Classes ###
@@ -88,6 +88,61 @@ class TestGameBase:
 
             assert ( observation == next_score )
             assert ( reward == 1 )  # Max reward
+
+class TestGameSimulator:
+    def test_observation_distribution(self):
+        env = GameSimulator(1, simple_rank_scores)
+        env.reset()
+        mean_observation = (env.observation_space.n - 1) / 2
+
+        manual_ranks = [card.rank for card in env.deck.cards]
+        manual_observations = [env.rank_scores[rank] for rank in manual_ranks]
+
+        assert np.all( env.observation_distribution() == manual_observations )
+        assert ( np.mean(env.observation_distribution()) == mean_observation )
+
+    def test_random(self):
+        env = GameSimulator(1, simple_rank_scores)
+        env.reset()
+        max_val = env.observation_space.n - 1
+        min_val = 0
+        
+        n_tries = 100
+        for i in range(n_tries):
+            val = env.random()
+            assert ( min_val <= val <= max_val )
+
+    def test_expected_observation(self):
+        env = GameSimulator(1, simple_rank_scores)
+        env.reset()
+        expected_mean = (env.observation_space.n - 1) / 2
+
+        assert ( expected_mean == env.mean_observation() )
+
+    def test_expected_observation(self):
+        test_card = Card("8C")
+        manual_exp_observation = simple_rank_scores[test_card.rank]
+        
+        env = GameSimulator(1, simple_rank_scores)
+        env.deck = Hand(test_card)
+
+        assert ( env.expected_observation() == manual_exp_observation )
+
+    def test_simulate_run(self):
+        env = GameSimulator(1, simple_rank_scores)
+        mean_observation = 6
+        
+        expected_rewards = 0
+        for score in simple_rank_scores.values():
+            norm_score = env.normalize_action(score)
+            norm_mean_obs = env.normalize_observation(mean_observation)
+            
+            expected_rewards += 4 * (1 - abs(norm_score - \
+                                             norm_mean_obs) / 2 )
+        
+        rewards = env.simulate_run(env.mean_observation)
+
+        assert ( np.sum(rewards) == expected_rewards )
 
 if __name__ == "__main__":
     pytest.main()
