@@ -142,7 +142,7 @@ class TestGameSimulator:
         
         rewards = env.simulate_run(env.mean_observation)
 
-        assert ( np.sum(rewards) == expected_rewards )
+        assert np.isclose(np.sum(rewards), expected_rewards)
 
 if __name__ == "__main__":
     pytest.main()
