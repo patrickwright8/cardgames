@@ -85,19 +85,19 @@ class GameSimulator(GameBase):
                  ):
         super().__init__(n_decks, rank_scores, n_actions)
 
-    def score_distribution(self):
+    def observation_distribution(self):
         ranks = [card.rank for card in self.deck.cards]
-        scores = [self.rank_scores[rank] for rank in ranks]
+        observations = [self.rank_scores[rank] for rank in ranks]
 
-        return np.array(scores)
+        return np.array(observations)
     
     def random(self):
         return self.deck._rng.integers(0, self.n_actions)
 
-    def expected_score(self):
-        return np.mean(self.score_distribution())
+    def expected_observation(self):
+        return np.mean(self.observation_distribution())
     
-    def mean_score(self):
+    def mean_observation(self):
         return np.mean( list(self.rank_scores.values()) )
 
     def simulate_run(self, action_func, seed=None, verbose=False):
