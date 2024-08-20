@@ -7,41 +7,36 @@ import numpy as np
 
 ### Constants ###
 suits = {
-    "C" : "Clubs",
-    "D" : "Diamonds",
-    "H" : "Hearts",
-    "S" : "Spades",
+    "C": "Clubs",
+    "D": "Diamonds",
+    "H": "Hearts",
+    "S": "Spades",
 }
 
 ranks = {
-    "2" : "Two",
-    "3" : "Three",
-    "4" : "Four",
-    "5" : "Five",
-    "6" : "Six",
-    "7" : "Seven",
-    "8" : "Eight",
-    "9" : "Nine",
+    "2": "Two",
+    "3": "Three",
+    "4": "Four",
+    "5": "Five",
+    "6": "Six",
+    "7": "Seven",
+    "8": "Eight",
+    "9": "Nine",
     "10": "Ten",
-    "J" : "Jack",
-    "Q" : "Queen",
-    "K" : "King",
-    "A" : "Ace",
+    "J": "Jack",
+    "Q": "Queen",
+    "K": "King",
+    "A": "Ace",
 }
 
-all_ids = [
-    rank + suit
-    for rank in ranks.keys()
-    for suit in suits.keys()
-]
+all_ids = [rank + suit for rank in ranks.keys() for suit in suits.keys()]
 
 N_CARDS_PER_DECK = len(all_ids)
 
+
 ### Low-Level Classes ###
 class Card:
-    def __init__(self,
-                 card : str
-                 ) -> None:
+    def __init__(self, card: str) -> None:
         """
         Initialize a Card. Input string should be of the format RankSuit.
 
@@ -63,7 +58,7 @@ class Card:
         self.rank = "".join(input_as_list[0:-1])
         # Capture last element of list for suit
         self.suit = "".join(input_as_list[-1])
-        
+
         # Generate rank name and suit name
         self.rank_name = ranks[self.rank]
         self.suit_name = suits[self.suit]
@@ -72,16 +67,15 @@ class Card:
         self.name = f"{self.rank_name} of {self.suit_name}"
         self.id = self.rank + self.suit
 
+
 ### High-Level Classes ###
 class Hand:
-    def __init__(self,
-                 *args : Card
-                 ) -> None:
+    def __init__(self, *args: Card) -> None:
         """
         Initialize a Hand. Input args must be Cards.
 
         Examples:
-            - `Hand(Card("4H"), Card("8C"), Card("AS"))` initializes a Hand 
+            - `Hand(Card("4H"), Card("8C"), Card("AS"))` initializes a Hand
               containing Four of Hearts, Eight of Clubs, and Ace of Spades.
 
         Params
@@ -92,7 +86,7 @@ class Hand:
         """
         self.cards = [arg for arg in args]
         ids = self.ids  # Generate ids to make sure args are Cards
-    
+
     # Class Properties
     @property
     def ids(self) -> list[str]:
@@ -104,33 +98,27 @@ class Hand:
     @property
     def n_cards(self) -> int:
         """
-        Number of Cards currently in hand. 
+        Number of Cards currently in hand.
         """
         return len(self.cards)
-     
+
     # Public methods
-    def add_cards(self,
-                  *args : Card
-                  ) -> None:
+    def add_cards(self, *args: Card) -> None:
         for arg in args:
             self.cards.append(arg)
 
-    def remove_cards(self,
-                     *args : Card
-                     ) -> None:
+    def remove_cards(self, *args: Card) -> None:
         for arg in args:
             ix = self.ids.index(arg.id)
             self.cards.pop(ix)
 
-    def remove_by_id(self,
-                     *args : str
-                     ) -> None:
+    def remove_by_id(self, *args: str) -> None:
         for arg in args:
             ix = self.ids.index(arg)
             self.cards.pop(ix)
 
     def print_cardnames(self) -> None:
-        names = [ card.name for card in self.cards ]
+        names = [card.name for card in self.cards]
         string = ", ".join(names)
         print(string)
 
@@ -139,19 +127,21 @@ class Hand:
         string = ", ".join(ids)
         print(string)
 
+
 class Deck(Hand):
-    def __init__(self,
-                 n_decks=1,
-                 seed=None,
-                 ) -> None:
+    def __init__(
+        self,
+        n_decks=1,
+        seed=None,
+    ) -> None:
         """
-        Initialize a Deck containing `n_decks * N_CARDS_PER_DECK` Cards. 
+        Initialize a Deck containing `n_decks * N_CARDS_PER_DECK` Cards.
 
         Params
         ------
         n_decks : int (default = 1)
             Number of decks to initialize with. Each of the Cards will have
-            `n_decks` occurrences in the Deck. 
+            `n_decks` occurrences in the Deck.
         seed : Any (default = None)
             Seed for shuffling deck
         """
@@ -167,17 +157,18 @@ class Deck(Hand):
         """
         self._rng.shuffle(self.cards)
 
-    def deal(self,
-             n=1,
-             ) -> list[Card]:
+    def deal(
+        self,
+        n=1,
+    ) -> list[Card]:
         """
-        Deals `n` Cards from top of the deck (starting at 0th index). 
-        Removes the cards from the Deck. 
+        Deals `n` Cards from top of the deck (starting at 0th index).
+        Removes the cards from the Deck.
 
         Params
         ------
         n : int (default = 1)
-            Number of Cards to be dealt        
+            Number of Cards to be dealt
 
         Returns
         -------
@@ -192,13 +183,14 @@ class Deck(Hand):
 
         return cards
 
-    def cut(self,
-            n : int,
-            ) -> None:
+    def cut(
+        self,
+        n: int,
+    ) -> None:
         """
-        Cuts the last n Cards out of the Deck. 
+        Cuts the last n Cards out of the Deck.
 
-        Cut Cards are stored as a Hand in the Deck.cut_cards attribute. 
+        Cut Cards are stored as a Hand in the Deck.cut_cards attribute.
 
         Params
         ------
@@ -210,6 +202,7 @@ class Deck(Hand):
 
         self.cut_cards = Hand(*self.cards[-n:])
         self.cards = self.cards[:-n]
+
 
 """
 To-Do:
